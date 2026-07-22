@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ata de Treinamento - Wick</title>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --primary: #7b2cbf;
+    --primary-glow: rgba(123,44,191,.15);
+    --secondary: #ff7b00;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --success: #16a34a;
+    --input-bg: #fafbfc;
+    --preview-bg: linear-gradient(135deg, #ffffff, #faf5ff);
+    --obs-bg: #fffbf5;
+    --toggle-circle: #000000;
+  }
+
+  [data-theme="dark"] {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #9d4edd;
+    --primary-glow: rgba(157,78,221,.25);
+    --secondary: #ff9e00;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --success: #22c55e;
+    --input-bg: #0f172a;
+    --preview-bg: linear-gradient(135deg, #1e293b, #2e1065);
+    --obs-bg: #292524;
+    --toggle-circle: #ffffff;
+  }
+
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0 auto;
+  }
+
+  header img {
+    height: 35px;
+  }
+
+  header span {
+    color: var(--secondary);
+  }
+
+  .theme-toggle-btn {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: unset;
+  }
+
+  .theme-toggle-btn:hover {
+    border-color: var(--primary);
+    transform: none;
+    box-shadow: 0 0 10px var(--primary-glow);
+  }
+
+  .theme-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--toggle-circle);
+    display: inline-block;
+    border: 1px solid var(--border);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 30px auto 60px auto;
+    padding: 0 20px;
+  }
+
+  .score-preview {
+    background: var(--preview-bg);
+    border-radius: 16px;
+    padding: 24px 30px;
+    box-shadow: 0 10px 30px rgba(123, 44, 191, 0.08);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border);
+  }
+
+  .score-preview strong {
+    font-size: 18px;
+    color: var(--primary);
+  }
+
+  .score-preview small {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .badge {
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 20px;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    transition: all 0.3s ease;
+  }
+
+  .section-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 25px rgba(0,0,0,.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .section-card:hover {
+    box-shadow: 0 12px 35px var(--primary-glow);
+    border-color: var(--primary);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-top: 0;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 22px;
+  }
+
+  label {
+    font-weight: 600;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  input[type=text], input[type=date], select, textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--input-bg);
+    box-sizing: border-box;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-main);
+    font-family: inherit;
+  }
+
+  input[type=text]:focus, input[type=date]:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: var(--bg-card);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .participantes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .participantes-table th, .participantes-table td {
+    border: 1px solid var(--border);
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .participantes-table th {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  .row-btn {
+    background: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+
+  .row-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+  }
+
+  .add-row-btn {
+    background: var(--input-bg);
+    color: var(--primary);
+    border: 1px dashed var(--primary);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    width: 100%;
+    transition: all 0.2s ease;
+    margin-bottom: 15px;
+  }
+
+  .add-row-btn:hover {
+    background: var(--primary-glow);
+  }
+
+  .actions-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  button.main-btn {
+    flex: 1;
+    background: linear-gradient(135deg, var(--secondary) 0%, #ff5500 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    padding: 16px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  button.main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 123, 0, 0.6);
+  }
+
+  .limpar-btn {
+    background: transparent;
+    color: #ef4444;
+    border: 2px solid #ef4444;
+    box-shadow: none;
+    flex: 1;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 16px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .limpar-btn:hover {
+    background-color: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    box-shadow: none;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 680px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .actions-container {
+      flex-direction: column;
+    }
+    header {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="width: 80px;"></div>
+  <div class="header-brand">
+    <img src="https://i.postimg.cc/WpY8c1jL/wick-roxo-sem-fundo.png" alt="Wick Logo">
+    <span>Ata de Treinamento / Reciclagem</span>
+  </div>
+  <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
+    <span class="theme-circle"></span> <span id="themeText">Escuro</span>
+  </button>
+</header>
+
+<div class="container">
+
+  <div class="score-preview">
+    <div>
+      <strong>Wick Gestão | Move | Grite Alto</strong>
+      <br>
+      <small>Av. C-106, Qd 299, Lt 03 Casa 1 St. Jardim América, Goiânia - GO</small>
+    </div>
+    <div class="badge" id="totalParticipantesBadge">0 Part.</div>
+  </div>
+
+  <form id="ataForm" onsubmit="return false;">
+    
+    <!-- DADOS DA EMPRESA E TREINAMENTO -->
+    <div class="section-card">
+      <div class="section-title">Informações do Treinamento</div>
+      
+      <div class="form-group">
+        <label for="focoTreinamento">Foco do Treinamento / Reciclagem</label>
+        <input type="text" id="focoTreinamento" value="PREENCHIMENTO DE CONTRATOS" required>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="ministrante">Responsável pelo Treinamento (Ministrante)</label>
+          <input type="text" id="ministrante" value="DHEMMERSON WILLIAN SILVA DE LIMA" required>
+        </div>
+        <div class="form-group">
+          <label for="dataTreinamento">Data do Treinamento</label>
+          <input type="date" id="dataTreinamento" value="2025-04-16" required>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="localTreinamento">Local</label>
+          <input type="text" id="localTreinamento" value="Goiânia – Goiás" required>
+        </div>
+        <div class="form-group">
+          <label for="autorizadoPor">Autorizado por</label>
+          <input type="text" id="autorizadoPor" placeholder="Nome do autorizador">
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJETIVOS E DIRETRIZES -->
+    <div class="section-card">
+      <div class="section-title">Objetivo e Procedimentos</div>
+      <div class="form-group">
+        <label for="descricaoObjetivo">Resumo da Sessão</label>
+        <textarea id="descricaoObjetivo">Foram abordados procedimentos práticos e teóricos com foco na melhoria do desempenho, padronização de processos e cumprimento das diretrizes previamente acordadas. O(s) participante(s) declaram ter recebido o conteúdo do treinamento, compreendido as instruções e estão cientes da importância da aplicação correta das práticas apresentadas.</textarea>
+      </div>
+    </div>
+
+    <!-- LISTA DE PARTICIPANTES -->
+    <div class="section-card">
+      <div class="section-title">Participantes da Reciclagem</div>
+      
+      <table class="participantes-table">
+        <thead>
+          <tr>
+            <th style="width: 45%;">Nome Completo</th>
+            <th style="width: 40%;">Cargo</th>
+            <th style="width: 15%; text-align: center;">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaParticipantes">
+          <!-- Linhas injetadas via JS -->
+        </tbody>
+      </table>
+
+      <button type="button" class="add-row-btn" onclick="adicionarLinha()">+ Adicionar Participante</button>
+    </div>
+
+    <div class="actions-container">
+      <button type="button" class="main-btn" onclick="gerarPDF()">Emitir Ata de Treinamento em PDF</button>
+      <button type="button" class="limpar-btn" onclick="limparTabela()">Limpar Tudo</button>
+    </div>
+  </form>
+</div>
+
+<img id="logoWick" src="https://i.postimg.cc/WpY8c1jL/wick-roxo-sem-fundo.png" style="display:none;" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// Alternância de Tema Claro / Escuro
+function toggleTheme() {
+  const html = document.documentElement;
+  const themeText = document.getElementById("themeText");
+  
+  if (html.getAttribute("data-theme") === "dark") {
+    html.removeAttribute("data-theme");
+    localStorage.setItem("wick_ata_theme", "light");
+    themeText.textContent = "Escuro";
+  } else {
+    html.setAttribute("data-theme", "dark");
+    localStorage.setItem("wick_ata_theme", "dark");
+    themeText.textContent = "Claro";
+  }
+}
+
+// Inicializar tema com base na preferência salva
+(function() {
+  const savedTheme = localStorage.getItem("wick_ata_theme");
+  const themeText = document.getElementById("themeText");
+  
+  if (savedTheme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    if (themeText) themeText.textContent = "Claro";
+  }
+})();
+
+// Gestão de participantes dinâmicos
+let participantes = [
+  { nome: "", cargo: "" },
+  { nome: "", cargo: "" },
+  { nome: "", cargo: "" }
+];
+
+function renderizarTabela() {
+  const tbody = document.getElementById("tabelaParticipantes");
+  tbody.innerHTML = "";
+
+  participantes.forEach((p, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="text" value="${p.nome}" placeholder="Nome completo" oninput="atualizarDado(${index}, 'nome', this.value)" style="padding: 10px; font-size: 14px;"></td>
+      <td><input type="text" value="${p.cargo}" placeholder="Cargo" oninput="atualizarDado(${index}, 'cargo', this.value)" style="padding: 10px; font-size: 14px;"></td>
+      <td style="text-align: center;"><button type="button" class="row-btn" onclick="removerLinha(${index})">Remover</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const countBadge = participantes.filter(p => p.nome.trim() !== "").length;
+  document.getElementById("totalParticipantesBadge").textContent = countBadge + " Part.";
+}
+
+function atualizarDado(index, campo, valor) {
+  participantes[index][campo] = valor;
+  if(campo === 'nome') {
+    const countBadge = participantes.filter(p => p.nome.trim() !== "").length;
+    document.getElementById("totalParticipantesBadge").textContent = countBadge + " Part.";
+  }
+}
+
+function adicionarLinha() {
+  participantes.push({ nome: "", cargo: "" });
+  renderizarTabela();
+}
+
+function removerLinha(index) {
+  participantes.splice(index, 1);
+  if(participantes.length === 0) participantes.push({ nome: "", cargo: "" });
+  renderizarTabela();
+}
+
+function limparTabela() {
+  participantes = [{ nome: "", cargo: "" }];
+  document.getElementById("autorizadoPor").value = "";
+  renderizarTabela();
+}
+
+// Inicializa tabela vazia
+renderizarTabela();
+
+function quebraLinha(doc, texto, x, y, lineHeight, maxWidth = 180) {
+  const splitText = doc.splitTextToSize(texto, maxWidth);
+  splitText.forEach((line, i) => {
+    doc.text(line, x, y + (i * lineHeight));
+  });
+  return y + (splitText.length * lineHeight);
+}
+
+function checarQuebraPagina(doc, y, lineHeight, margemInferior = 15) {
+  const paginaAltura = doc.internal.pageSize.getHeight();
+  if (y + lineHeight > paginaAltura - margemInferior) {
+    doc.addPage();
+    return 15;
+  }
+  return y;
+}
+
+async function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const img = document.getElementById('logoWick');
+  if (!img.complete) await new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
+
+  const imgWidth = 42;
+  const imgHeight = 12.5;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  
+  const imgX = (pageWidth - imgWidth) / 2;
+  let imgY = 12;
+  
+  try {
+    doc.addImage(img, 'PNG', imgX, imgY, imgWidth, imgHeight);
+  } catch(e) {}
+
+  let y = imgY + imgHeight + 6;
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor("#7b2cbf");
+  doc.text("ATA DE TREINAMENTO / RECICLAGEM", pageWidth / 2, y, { align: "center" });
+
+  y += 8;
+  const margin = 12;
+  const lineHeight = 5.5;
+
+  // Informações da Empresa & Introdução
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor("#374151");
+
+  const dataRaw = document.getElementById("dataTreinamento").value || "2025-04-16";
+  const partes = dataRaw.split("-");
+  const dia = partes[2] || "16";
+  const mes = partes[1] || "04";
+  const ano = partes[0] || "2025";
+  const mesesNomes = ["", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  const mesNome = mesesNomes[parseInt(mes, 10)] || "Abril";
+
+  const foco = document.getElementById("focoTreinamento").value.toUpperCase();
+  const ministrante = document.getElementById("ministrante").value.toUpperCase();
+  const local = document.getElementById("localTreinamento").value;
+  const autorizado = document.getElementById("autorizadoPor").value.trim() || "__________________________________________________";
+
+  let textoIntroducao = `Aos ${dia} dias do mês de ${mesNome} de ${ano}, na sede/instalação da empresa Wick Gestão | Move | Grite Alto Av. C-106, Qd 299, Lt 03 Casa 1 St. Jardim América, Goiânia - GO 74255050, foi realizado um treinamento/reciclagem com foco em ${foco}.\n\nO treinamento foi ministrado por ${ministrante}, com o objetivo de capacitar e atualizar os conhecimentos do(s) participante(s).\n\nDurante a sessão, foram abordados procedimentos práticos e teóricos com foco na melhoria do desempenho, padronização de processos e cumprimento das diretrizes previamente acordadas.\n\nO(s) participante(s) abaixo assinados declaram ter recebido o conteúdo do treinamento, compreenderam as instruções e estão cientes da importância da aplicação correta das práticas apresentadas.`;
+
+  y = quebraLinha(doc, textoIntroducao, margin, y, lineHeight, 186);
+  y += 6;
+
+  // Tabela de Participantes no PDF (Harmonizada)
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor("#7b2cbf");
+  doc.text("Relação de Participantes:", margin, y);
+  y += 6;
+
+  // Configurações de colunas harmônicas e proporcionais
+  const colX1 = margin;
+  const colX2 = margin + 72;
+  const colX3 = margin + 132;
+  const larguraTotal = 186;
+  const rowHeight = 11; // Altura confortável para assinatura física e leitura
+
+  // Cabeçalho da Tabela PDF
+  doc.setFillColor("#faf5ff");
+  doc.setDrawColor("#e5e7eb");
+  doc.setLineWidth(0.3);
+  doc.rect(margin, y, larguraTotal, 8, "FD");
+  doc.setFontSize(9.5);
+  doc.setTextColor("#7b2cbf");
+  doc.text("Nome Completo", colX1 + 4, y + 5.5);
+  doc.text("Cargo", colX2 + 4, y + 5.5);
+  doc.text("Assinatura", colX3 + 4, y + 5.5);
+  y += 8;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9.5);
+
+  const validParticipantes = participantes.filter(p => p.nome.trim() !== "");
+  
+  if (validParticipantes.length === 0) {
+    validParticipantes.push({ nome: "Nenhum participante informado", cargo: "-" });
+  }
+
+  validParticipantes.forEach((p, idx) => {
+    y = checarQuebraPagina(doc, y, rowHeight);
+    
+    // Fundo alternado sutil para melhor legibilidade nas linhas da tabela
+    if (idx % 2 === 0) {
+      doc.setFillColor("#ffffff");
+    } else {
+      doc.setFillColor("#fcfbff");
+    }
+    
+    doc.setDrawColor("#e5e7eb");
+    doc.rect(margin, y, larguraTotal, rowHeight, "FD");
+
+    // Limites de largura para evitar estouro nas colunas
+    const nomeTruncado = doc.splitTextToSize(p.nome, 58)[0] || "";
+    const cargoTruncado = doc.splitTextToSize(p.cargo, 52)[0] || "";
+
+    doc.setTextColor("#1f2937");
+    doc.text(nomeTruncado, colX1 + 4, y + 7);
+    
+    doc.setTextColor("#4b5563");
+    doc.text(cargoTruncado, colX2 + 4, y + 7);
+    
+    // Linha pontilhada/traço elegante e limpo para assinatura manuscrita
+    doc.setDrawColor("#9ca3af");
+    doc.setLineWidth(0.2);
+    doc.line(colX3 + 4, y + 7.5, colX3 + 48, y + 7.5);
+
+    y += rowHeight;
+  });
+
+  y += 8;
+  y = checarQuebraPagina(doc, y, 35);
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor("#1f2937");
+  doc.text(`Responsável pelo Treinamento: ${ministrante}`, margin, y);
+  y += 7;
+
+  doc.setFont("helvetica", "normal");
+  doc.text("Nada mais havendo a tratar, foi lavrada a presente ata, que vai assinada por todos os presentes.", margin, y);
+  y += 9;
+
+  doc.text(`Autorizado por: ${autorizado}`, margin, y);
+  y += 7;
+  doc.text(`Data: ${dia}/${mes}/${ano}         Local: ${local}`, margin, y);
+
+  doc.save("ata_treinamento_wick.pdf");
+}
+</script>
+
+</body>
+</html>
