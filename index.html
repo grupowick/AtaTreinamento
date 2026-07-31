@@ -548,6 +548,12 @@ function checarQuebraPagina(doc, y, lineHeight, margemInferior = 15) {
   return y;
 }
 
+  function textoNegrito(doc, texto, x, y, tamanho = 10) {
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(tamanho);
+  doc.text(texto, x, y);
+}
+  
 async function gerarPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -578,7 +584,7 @@ async function gerarPDF() {
 
   // Informações da Empresa & Introdução
   doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
+  doc.setFont("helvetica", "bold");
   doc.setTextColor("#374151");
 
   const dataRaw = document.getElementById("dataTreinamento").value || "2025-04-16";
@@ -604,6 +610,7 @@ ${resumoSessao}
 
 O(s) participante(s) abaixo assinados declaram ter recebido o conteúdo do treinamento, compreenderam as instruções e estão cientes da importância da aplicação correta das práticas apresentadas.`;
 
+  doc.setFont("helvetica", "bold");
   y = quebraLinha(doc, textoIntroducao, margin, y, lineHeight, 186);
   y += 6;
 
@@ -633,7 +640,7 @@ O(s) participante(s) abaixo assinados declaram ter recebido o conteúdo do trein
   doc.text("Assinatura", colX3 + 4, y + 5.5);
   y += 8;
 
-  doc.setFont("helvetica", "normal");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(9.5);
 
   const validParticipantes = participantes.filter(p => p.nome.trim() !== "");
