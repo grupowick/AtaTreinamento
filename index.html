@@ -593,8 +593,16 @@ async function gerarPDF() {
   const ministrante = document.getElementById("ministrante").value.toUpperCase();
   const local = document.getElementById("localTreinamento").value;
   const autorizado = document.getElementById("autorizadoPor").value.trim() || "__________________________________________________";
+  const resumoSessao = document.getElementById("descricaoObjetivo").value.trim();
+  let textoIntroducao = `Aos ${dia} dias do mês de ${mesNome} de ${ano}, na sede/instalação da empresa Wick Gestão | Move | Grite Alto Av. C-106, Qd 299, Lt 03 Casa 1 St. Jardim América, Goiânia - GO 74255050, foi realizado um treinamento/reciclagem com foco em ${foco}.
 
-  let textoIntroducao = `Aos ${dia} dias do mês de ${mesNome} de ${ano}, na sede/instalação da empresa Wick Gestão | Move | Grite Alto Av. C-106, Qd 299, Lt 03 Casa 1 St. Jardim América, Goiânia - GO 74255050, foi realizado um treinamento/reciclagem com foco em ${foco}.\n\nO treinamento foi ministrado por ${ministrante}, com o objetivo de capacitar e atualizar os conhecimentos do(s) participante(s).\n\nDurante a sessão, foram abordados procedimentos práticos e teóricos com foco na melhoria do desempenho, padronização de processos e cumprimento das diretrizes previamente acordadas.\n\nO(s) participante(s) abaixo assinados declaram ter recebido o conteúdo do treinamento, compreenderam as instruções e estão cientes da importância da aplicação correta das práticas apresentadas.`;
+O treinamento foi ministrado por ${ministrante}, com o objetivo de capacitar e atualizar os conhecimentos do(s) participante(s).
+
+Durante a sessão, foram abordados os seguintes pontos:
+
+${resumoSessao}
+
+O(s) participante(s) abaixo assinados declaram ter recebido o conteúdo do treinamento, compreenderam as instruções e estão cientes da importância da aplicação correta das práticas apresentadas.`;
 
   y = quebraLinha(doc, textoIntroducao, margin, y, lineHeight, 186);
   y += 6;
